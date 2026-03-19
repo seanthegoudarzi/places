@@ -66,10 +66,6 @@ pattern, with a clear separation of concerns across every layer.
 The app follows the **Model-View-Intent** unidirectional data flow pattern. Each screen is composed
 of five distinct pieces:
 
-**Accessibility**: All interactive elements include appropriate accessibility labels and hints. The
-locations list uses semantic labels for VoiceOver navigation, and form inputs in the custom location
-screen provide clear descriptions of validation states.
-
 | Component        | Role                                                                 |
 |------------------|----------------------------------------------------------------------|
 | **Intent**       | An enum representing every action a user or the system can trigger.  |
@@ -77,6 +73,14 @@ screen provide clear descriptions of validation states.
 | **Effect**       | An enum for one-shot side effects (navigation, opening a URL, etc.). |
 | **IntentHandler**| A stateless reducer that receives an intent, reads/mutates state via a context, and optionally emits effects. |
 | **ViewModel**    | A generic class that owns the state, routes intents to the handler, and publishes effects via Combine. |
+
+**Swift 6 & Concurrency**: This project uses **Swift 6** with **default main actor isolation**
+enabled. As a result, you won't see many `@MainActor` annotations throughout the codebase — types
+are isolated to the main actor by default unless explicitly opted out.
+
+**Accessibility**: All interactive elements include appropriate accessibility labels and hints. The
+locations list uses semantic labels for VoiceOver navigation, and form inputs in the custom location
+screen provide clear descriptions of validation states.
 
 ### Screen Anatomy
 
