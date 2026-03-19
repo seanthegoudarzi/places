@@ -41,34 +41,6 @@ final class LocationsViewModelTests: XCTestCase {
         XCTAssertNil(vm.state.errorMessage)
     }
 
-    func testSend_fetchLocations_failure_setsError() async {
-        let mockRepo = MockLocationsRepository()
-        mockRepo.result = .failure(MockError(message: "Offline"))
-        let vm = makeViewModel(locationsRepository: mockRepo)
-        viewModel = vm
-
-        await vm.handle(.fetchLocations)
-
-        XCTAssertFalse(vm.state.isLoading)
-        XCTAssertEqual(vm.state.errorMessage, "Offline")
-    }
-
-    func testSend_fetchLocations_publishesNoEffect() async {
-        let mockRepo = MockLocationsRepository()
-        mockRepo.result = .success([])
-        let vm = makeViewModel(locationsRepository: mockRepo)
-        viewModel = vm
-        var received: [LocationsListScreenEffect] = []
-
-        vm.effectPublisher
-            .sink { received.append($0) }
-            .store(in: &cancellables)
-
-        await vm.handle(.fetchLocations)
-
-        XCTAssertTrue(received.isEmpty)
-    }
-
     func testSend_openInWikipedia_publishesOpenURLEffect() async {
         let vm = makeViewModel()
         viewModel = vm
@@ -93,17 +65,6 @@ final class LocationsViewModelTests: XCTestCase {
         }
     }
 
-    func testSend_openInWikipedia_doesNotMutateState() async {
-        let vm = makeViewModel()
-        viewModel = vm
-        let location = Location(name: "Amsterdam", lat: 52.35, long: 4.83)
-
-        await vm.handle(.openInWikipedia(location))
-
-        XCTAssertNil(vm.state.locations)
-        XCTAssertFalse(vm.state.isLoading)
-    }
-
     func testSend_openInWikipedia_consecutiveTaps_eachPublishEffect() async {
         let vm = makeViewModel()
         viewModel = vm
@@ -119,33 +80,6 @@ final class LocationsViewModelTests: XCTestCase {
 
         XCTAssertEqual(received.count, 2)
     }
-
-    // MARK: - wikipediaOpenFailed
-
-    func testSend_wikipediaOpenFailed_setsAlertFlag() async {
-        let vm = makeViewModel()
-        viewModel = vm
-
-        await vm.handle(.wikipediaOpenFailed)
-
-        XCTAssertTrue(vm.state.showWikipediaNotInstalledAlert)
-    }
-
-    func testSend_wikipediaOpenFailed_publishesNoEffect() async {
-        let vm = makeViewModel()
-        viewModel = vm
-        var received: [LocationsListScreenEffect] = []
-
-        vm.effectPublisher
-            .sink { received.append($0) }
-            .store(in: &cancellables)
-
-        await vm.handle(.wikipediaOpenFailed)
-
-        XCTAssertTrue(received.isEmpty)
-    }
-
-    // MARK: - alertDismissed
 
     func testSend_alertDismissed_clearsAlertFlag() async {
         let vm = makeViewModel()

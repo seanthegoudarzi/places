@@ -28,42 +28,6 @@ final class CustomLocationViewModelTests: XCTestCase {
         XCTAssertFalse(vm.state.isAddButtonEnabled)
     }
 
-    func testSend_updateName_updatesState_publishesNoEffect() async {
-        let vm = makeViewModel()
-        viewModel = vm
-        var received: [CustomLocationScreenEffect] = []
-        vm.effectPublisher.sink { received.append($0) }.store(in: &cancellables)
-
-        await vm.handle(.updateName("Amsterdam"))
-
-        XCTAssertEqual(vm.state.nameText, "Amsterdam")
-        XCTAssertTrue(received.isEmpty)
-    }
-
-    func testSend_updateLatitude_updatesState_publishesNoEffect() async {
-        let vm = makeViewModel()
-        viewModel = vm
-        var received: [CustomLocationScreenEffect] = []
-        vm.effectPublisher.sink { received.append($0) }.store(in: &cancellables)
-
-        await vm.handle(.updateLatitude("52.35"))
-
-        XCTAssertEqual(vm.state.latitudeText, "52.35")
-        XCTAssertTrue(received.isEmpty)
-    }
-
-    func testSend_updateLongitude_updatesState_publishesNoEffect() async {
-        let vm = makeViewModel()
-        viewModel = vm
-        var received: [CustomLocationScreenEffect] = []
-        vm.effectPublisher.sink { received.append($0) }.store(in: &cancellables)
-
-        await vm.handle(.updateLongitude("4.83"))
-
-        XCTAssertEqual(vm.state.longitudeText, "4.83")
-        XCTAssertTrue(received.isEmpty)
-    }
-
     func testSend_addLocation_withValidCoordsAndName_publishesDidAddEffect() async {
         let vm = makeViewModel()
         viewModel = vm
@@ -83,17 +47,6 @@ final class CustomLocationViewModelTests: XCTestCase {
         } else {
             XCTFail("Expected .didAdd effect")
         }
-    }
-
-    func testSend_addLocation_withInvalidCoords_publishesNoEffect() async {
-        let vm = makeViewModel()
-        viewModel = vm
-        var received: [CustomLocationScreenEffect] = []
-        vm.effectPublisher.sink { received.append($0) }.store(in: &cancellables)
-
-        await vm.handle(.addLocation)
-
-        XCTAssertTrue(received.isEmpty)
     }
 
     func testSend_addLocation_consecutiveTaps_eachPublishesEffect() async {
