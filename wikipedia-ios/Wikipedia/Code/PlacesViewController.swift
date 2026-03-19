@@ -2077,6 +2077,25 @@ class PlacesViewController: ArticleLocationCollectionViewController, UISearchBar
         recenterOnUserLocation(self)
     }
 
+    @objc public func showCoordinateWithLatitude(_ latitude: Double, longitude: Double) {
+        guard view != nil else { return }
+        let center = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+        let span = MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
+        let coordinateRegion = MKCoordinateRegion(center: center, span: span)
+        mapRegion = coordinateRegion
+        let localizedDescription = "\(latitude), \(longitude)"
+        currentSearch = PlaceSearch(
+            filter: currentSearchFilter,
+            type: .location,
+            origin: .user,
+            sortStyle: .links,
+            string: nil,
+            region: coordinateRegion,
+            localizedDescription: localizedDescription,
+            searchResult: nil
+        )
+    }
+
     @objc public func showArticleURL(_ articleURL: URL) {
         guard let article = dataStore.fetchArticle(with: articleURL), let title = articleURL.wmf_title,
               view != nil else { // force view instantiation

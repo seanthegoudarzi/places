@@ -62,15 +62,28 @@ __attribute__((annotate("returns_localized_nsstring"))) static inline NSString *
 + (instancetype)wmf_placesActivityWithURL:(NSURL *)activityURL {
     NSURLComponents *components = [NSURLComponents componentsWithURL:activityURL resolvingAgainstBaseURL:NO];
     NSURL *articleURL = nil;
+    NSNumber *latitude = nil;
+    NSNumber *longitude = nil;
     for (NSURLQueryItem *item in components.queryItems) {
         if ([item.name isEqualToString:@"WMFArticleURL"]) {
-            NSString *articleURLString = item.value;
-            articleURL = [NSURL URLWithString:articleURLString];
-            break;
+            articleURL = [NSURL URLWithString:item.value];
+        } else if ([item.name isEqualToString:@"latitude"] && item.value.length > 0) {
+            latitude = @(item.value.doubleValue);
+        } else if ([item.name isEqualToString:@"longitude"] && item.value.length > 0) {
+            longitude = @(item.value.doubleValue);
         }
     }
     NSUserActivity *activity = [self wmf_pageActivityWithName:@"Places"];
     activity.webpageURL = articleURL;
+    if (latitude && longitude) {
+        // Merge coordinates into the existing userInfo (which contains "WMFPage": "Places"
+        // required by wmf_type for tab routing). Replacing userInfo entirely would cause
+        // the activity type to be misidentified as WMFUserActivityTypeLink.
+        NSMutableDictionary *info = [activity.userInfo mutableCopy] ?: [NSMutableDictionary dictionary];
+        info[@"latitude"] = latitude;
+        info[@"longitude"] = longitude;
+        activity.userInfo = [info copy];
+    }
     return activity;
 }
 
