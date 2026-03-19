@@ -219,6 +219,7 @@ private struct LocationsList: View {
                 onLocationItemTapped(item)
             } label: {
                 LocationRowView(item: item)
+                    .contentShape(Rectangle())
             }
             .buttonStyle(.plain)
         }
