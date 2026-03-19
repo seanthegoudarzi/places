@@ -7,6 +7,38 @@ pattern, with a clear separation of concerns across every layer.
 
 ---
 
+## How to Setup Projects
+
+### Wikipedia App
+
+1. Navigate to the Wikipedia project folder:
+   ```bash
+   cd wikipedia-ios
+   ```
+
+2. Run the setup script:
+   ```bash
+   ./scripts/setup
+   ```
+
+3. Install the app on your phone or simulator using Xcode.
+
+### Places App
+
+1. Open the project in Xcode:
+   ```bash
+   open Places/Places.xcodeproj
+   ```
+
+2. In Xcode, select your development team:
+   - Go to the project settings
+   - Select the "Places" target
+   - Under "Signing & Capabilities", choose your team from the dropdown
+
+3. Run the app on your simulator or physical device.
+
+---
+
 ## Table of Contents
 
 - [Architecture Overview](#architecture-overview)
