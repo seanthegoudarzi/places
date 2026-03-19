@@ -34,6 +34,10 @@ pattern, with a clear separation of concerns across every layer.
 The app follows the **Model-View-Intent** unidirectional data flow pattern. Each screen is composed
 of five distinct pieces:
 
+**Accessibility**: All interactive elements include appropriate accessibility labels and hints. The
+locations list uses semantic labels for VoiceOver navigation, and form inputs in the custom location
+screen provide clear descriptions of validation states.
+
 | Component        | Role                                                                 |
 |------------------|----------------------------------------------------------------------|
 | **Intent**       | An enum representing every action a user or the system can trigger.  |
@@ -149,6 +153,11 @@ they serve as a proof of concept.
 Because intent handlers are stateless reducers, unit tests are straightforward: construct the
 handler with its (mocked) dependencies, call `handle` with an intent and an initial state, and
 assert on the collected state snapshots and effects.
+
+**Note**: Not all sections have unit tests in this project (e.g., `NavigatorIntentHandler` doesn't
+have a unit test), but the same logic and patterns demonstrated in the existing unit tests apply
+universally to any intent handler. Each handler can be tested in isolation by mocking its
+dependencies and verifying state transitions and emitted effects.
 
 ### UI Tests
 
