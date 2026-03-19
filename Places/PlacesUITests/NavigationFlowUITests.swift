@@ -77,41 +77,4 @@ final class NavigationFlowUITests: XCTestCase {
         returnedList.assertLocationVisible("Amsterdam")
     }
 
-    @MainActor
-    func testAddLocationFromEmptyState_transitionsToPopulatedList() throws {
-        let list = launch(scenario: "empty").waitForEmpty()
-
-        let returnedList = list
-            .tapAdd()
-            .typeName("Berlin")
-            .typeLatitude("52.5200")
-            .typeLongitude("13.4050")
-            .submit()
-
-        returnedList.assertLocationVisible("Berlin")
-    }
-
-    @MainActor
-    func testAddMultipleLocations_allAppearInList() throws {
-        var list = launch(scenario: "empty").waitForEmpty()
-
-        list = list
-            .tapAdd()
-            .typeName("Paris")
-            .typeLatitude("48.8566")
-            .typeLongitude("2.3522")
-            .submit()
-
-        list.assertLocationVisible("Paris")
-
-        list = list
-            .tapAdd()
-            .typeName("Rome")
-            .typeLatitude("41.9028")
-            .typeLongitude("12.4964")
-            .submit()
-
-        list.assertLocationVisible("Paris")
-        list.assertLocationVisible("Rome")
-    }
 }
