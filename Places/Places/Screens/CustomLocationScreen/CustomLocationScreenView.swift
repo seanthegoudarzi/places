@@ -78,7 +78,7 @@ private struct CustomLocationContentView: View {
                 .accessibilityValue(state.longitudeText.isEmpty ? "" : state.longitudeText)
                 .accessibilityIdentifier("longitudeTextField")
             } header: {
-                Text("coordinates_label", tableName: nil)
+                EmptyView()
             } footer: {
                 if let error = state.validationError {
                     HStack(spacing: 8) {

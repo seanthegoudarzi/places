@@ -31,16 +31,6 @@
         }
       }
     },
-    "coordinates_label" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Coordinates"
-          }
-        }
-      }
-    },
     "custom_location_title" : {
       "localizations" : {
         "en" : {
