@@ -1,11 +1,11 @@
 import Foundation
 
 struct DefaultLocationsRepository: LocationsRepository {
-    private let githubDataSource: GithubLocationsDataSource
+    private let githubDataSource: GithubRemoteLocationDataSource
     private let inMemoryDataSource: TemporaryInMemoryLocationDataSource
 
     init(
-        githubDataSource: GithubLocationsDataSource,
+        githubDataSource: GithubRemoteLocationDataSource,
         inMemoryDataSource: TemporaryInMemoryLocationDataSource
     ) {
         self.githubDataSource = githubDataSource

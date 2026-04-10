@@ -12,11 +12,11 @@ enum DependencyModule {
 
         // MARK: - Repositories
         
-        container.register {
-            GithubLocationsDataSource()
+        container.register(GithubRemoteLocationDataSource.self) {
+            DefaultGithubLocationsDataSource()
         }
-        container.register {
-            TemporaryInMemoryLocationDataSource()
+        container.register(TemporaryInMemoryLocationDataSource.self) {
+            DefaultTemporaryInMemoryLocationDataSource()
         }
 
         if let override = locationsRepository {
@@ -24,8 +24,8 @@ enum DependencyModule {
         } else {
             container.registerSingleton(LocationsRepository.self) {
                 DefaultLocationsRepository(
-                    githubDataSource: container.resolve(),
-                    inMemoryDataSource: container.resolve()
+                    githubDataSource: container.resolve(GithubRemoteLocationDataSource.self),
+                    inMemoryDataSource: container.resolve(TemporaryInMemoryLocationDataSource.self)
                 )
             }
         }

@@ -1,6 +1,10 @@
 import Foundation
 
-struct GithubLocationsDataSource {
+protocol GithubRemoteLocationDataSource: Sendable {
+    func fetchLocations() async throws -> [Location]
+}
+
+struct DefaultGithubLocationsDataSource: GithubRemoteLocationDataSource {
     private let urlString = "https://raw.githubusercontent.com/abnamrocoesd/assignment-ios/main/locations.json"
     private let session: URLSession
 
