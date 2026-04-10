@@ -6,7 +6,7 @@ enum DependencyModule {
 
         // MARK: - Formatters
 
-        container.registerSingleton(CoordinateFormatter.self) {
+        container.register(CoordinateFormatter.self) {
             DefaultCoordinateFormatter()
         }
 
@@ -15,14 +15,14 @@ enum DependencyModule {
         container.register(GithubRemoteLocationDataSource.self) {
             DefaultGithubLocationsDataSource()
         }
-        container.register(TemporaryInMemoryLocationDataSource.self) {
+        container.registerSingleton(TemporaryInMemoryLocationDataSource.self) {
             DefaultTemporaryInMemoryLocationDataSource()
         }
 
         if let override = locationsRepository {
-            container.registerSingleton(LocationsRepository.self) { override }
+            container.register(LocationsRepository.self) { override }
         } else {
-            container.registerSingleton(LocationsRepository.self) {
+            container.register(LocationsRepository.self) {
                 DefaultLocationsRepository(
                     githubDataSource: container.resolve(GithubRemoteLocationDataSource.self),
                     inMemoryDataSource: container.resolve(TemporaryInMemoryLocationDataSource.self)
