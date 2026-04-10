@@ -6,5 +6,5 @@ struct LocationDisplayItem: Identifiable, Hashable {
     let accessibilityLabel: String
 
     var id: String { location.id }
-    var displayName: String { location.displayName }
+    var displayName: String { location.name ?? String(localized: "unknown_location") }
 }

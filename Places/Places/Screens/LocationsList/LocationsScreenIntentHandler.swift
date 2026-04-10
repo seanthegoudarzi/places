@@ -83,7 +83,7 @@ struct LocationsScreenIntentHandler: IntentHandler {
             coordinatesText: "\(formattedLat), \(formattedLon)",
             accessibilityLabel: await String(
                 format: String(localized: "location_accessibility_label"),
-                location.displayName,
+                location.name ?? String(localized: "unknown_location"),
                 formattedLat,
                 formattedLon
             )

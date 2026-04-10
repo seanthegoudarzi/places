@@ -14,7 +14,6 @@ final class LocationTests: XCTestCase {
         XCTAssertEqual(location.name, "Amsterdam")
         XCTAssertEqual(location.lat, 52.3547498, accuracy: 0.0001)
         XCTAssertEqual(location.long, 4.8339215, accuracy: 0.0001)
-        XCTAssertEqual(location.displayName, "Amsterdam")
     }
 
     func testDecoding_withoutName() throws {
@@ -27,7 +26,6 @@ final class LocationTests: XCTestCase {
         XCTAssertNil(location.name)
         XCTAssertEqual(location.lat, 40.4380638, accuracy: 0.0001)
         XCTAssertEqual(location.long, -3.7495758, accuracy: 0.0001)
-        XCTAssertEqual(location.displayName, "Unknown Location")
     }
 
     func testDecoding_locationResponse() throws {

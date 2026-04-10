@@ -10,9 +10,5 @@ struct Location: Codable, Identifiable, Hashable, Sendable {
     enum CodingKeys: String, CodingKey {
         case name, lat, long
     }
-
-    var displayName: String {
-        name ?? String(localized: "unknown_location")
-    }
 }
 
