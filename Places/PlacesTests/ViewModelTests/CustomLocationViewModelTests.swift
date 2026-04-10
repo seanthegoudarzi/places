@@ -19,37 +19,16 @@ final class CustomLocationViewModelTests: XCTestCase {
         super.tearDown()
     }
 
-    func testInitialState_isEmpty() {
+    func testHandle_delegatesToIntentHandler_updatingState() async {
         let vm = makeViewModel()
         viewModel = vm
-        XCTAssertEqual(vm.state.nameText, "")
-        XCTAssertEqual(vm.state.latitudeText, "")
-        XCTAssertEqual(vm.state.longitudeText, "")
-        XCTAssertFalse(vm.state.isAddButtonEnabled)
-    }
 
-    func testSend_addLocation_withValidCoordsAndName_publishesDidAddEffect() async {
-        let vm = makeViewModel()
-        viewModel = vm
-        var received: [CustomLocationScreenEffect] = []
-        vm.effectPublisher.sink { received.append($0) }.store(in: &cancellables)
-
-        await vm.handle(.updateLatitude("52.35"))
-        await vm.handle(.updateLongitude("4.83"))
         await vm.handle(.updateName("My Place"))
-        await vm.handle(.addLocation)
 
-        XCTAssertEqual(received.count, 1)
-        if case .navigateToRoot(let location) = received[0] {
-            XCTAssertEqual(location.name, "My Place")
-            XCTAssertEqual(location.lat, 52.35, accuracy: 0.001)
-            XCTAssertEqual(location.long, 4.83, accuracy: 0.001)
-        } else {
-            XCTFail("Expected .didAdd effect")
-        }
+        XCTAssertEqual(vm.state.nameText, "My Place", "State should be updated via intent handler")
     }
 
-    func testSend_addLocation_consecutiveTaps_eachPublishesEffect() async {
+    func testHandle_delegatesToIntentHandler_publishingEffects() async {
         let vm = makeViewModel()
         viewModel = vm
         var received: [CustomLocationScreenEffect] = []
@@ -58,10 +37,10 @@ final class CustomLocationViewModelTests: XCTestCase {
         await vm.handle(.updateLatitude("52.35"))
         await vm.handle(.updateLongitude("4.83"))
         await vm.handle(.addLocation)
-        await vm.handle(.addLocation)
 
-        XCTAssertEqual(received.count, 2)
+        XCTAssertEqual(received.count, 1, "Effects from intent handler should be published")
     }
+
 
     // MARK: - Helpers
 
