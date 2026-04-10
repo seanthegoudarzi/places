@@ -170,12 +170,6 @@ intentional. For example:
   demonstrate how this layer makes it trivial
   to swap data sources, add caching, or test in isolation.
 
-- **Offloading coordinate formatting to a background TaskGroup** — Formatting a handful of numbers
-  is not a performance bottleneck at the current scale. However, the concurrent mapping demonstrates that when the
-  operation *is* expensive (e.g., formatting thousands of items, or performing locale-sensitive
-  number formatting that involves non-trivial work), the architecture already supports pushing that
-  work off the main thread with no structural changes.
-
 The goal is to show that this architecture scales. In a production codebase with a more realistic input,
 complex business rules, and real performance constraints, these patterns pay for themselves. Here
 they serve as a proof of concept.

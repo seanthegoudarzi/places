@@ -29,18 +29,7 @@ struct LocationsScreenIntentHandler: IntentHandler {
                 let locations = try await locationsRepository.fetchLocations()
                 var updated = newState
                 updated.isLoading = false
-                updated.locations = await withTaskGroup(of: (Int, LocationDisplayItem).self, body: { taskGroup in
-                    for (locationIndex, location) in locations.enumerated() {
-                        taskGroup.addTask {
-                            return (locationIndex, await makeDisplayItem(from: location, using: coordinateFormatter))
-                        }
-                    }
-                    var locations: [LocationDisplayItem?] = Array(repeating: nil, count: locations.count)
-                    for await result in taskGroup {
-                        locations[result.0] = result.1
-                    }
-                    return locations.compactMap { $0 }
-                })
+                updated.locations = locations.map { makeDisplayItem(from: $0, using: coordinateFormatter) }
                 await context.updateState(updated)
             } catch {
                 var failed = newState
@@ -68,20 +57,17 @@ struct LocationsScreenIntentHandler: IntentHandler {
         }
     }
 
-    @concurrent
     private func makeDisplayItem(
         from location: Location,
         using coordinateFormatter: CoordinateFormatter
-    ) async -> LocationDisplayItem {
-        async let lat = coordinateFormatter.format(location.lat)
-        async let lon = coordinateFormatter.format(location.long)
-        
-        let (formattedLat, formattedLon) = await (lat, lon)
-        
+    ) -> LocationDisplayItem {
+        let formattedLat = coordinateFormatter.format(location.lat)
+        let formattedLon = coordinateFormatter.format(location.long)
+
         return LocationDisplayItem(
             location: location,
             coordinatesText: "\(formattedLat), \(formattedLon)",
-            accessibilityLabel: await String(
+            accessibilityLabel: String(
                 format: String(localized: "location_accessibility_label"),
                 location.name ?? String(localized: "unknown_location"),
                 formattedLat,
