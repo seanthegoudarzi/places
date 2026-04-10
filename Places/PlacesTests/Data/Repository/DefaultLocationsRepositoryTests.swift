@@ -25,7 +25,7 @@ final class DefaultLocationsRepositoryTests: XCTestCase {
         let result = try await makeSUT().fetchLocations()
 
         XCTAssertEqual(result.count, 2)
-        XCTAssertEqual(result[0].name, "Reemote")
+        XCTAssertEqual(result[0].name, "Remote")
         XCTAssertEqual(result[1].name, "Local")
     }
 
